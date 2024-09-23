@@ -1,0 +1,26 @@
+def crack_safe(n, k):
+    def dfs(path):
+        if len(path) == n + k:  # Ensure we have enough digits for the last n checks
+            return path
+        
+        for i in range(k):
+            new_digit = str(i)
+            next_path = path + new_digit
+            
+            if next_path[-n:] not in seen:  # Only proceed if the last n digits haven't been seen
+                seen.add(next_path[-n:])
+                result = dfs(next_path)
+                if result:
+                    return result
+                seen.remove(next_path[-n:])  # Backtrack
+        
+        return None
+    
+    seen = set()
+    return dfs('0' * n)  # Start with n zeros
+
+# Example Usage
+n = 1
+k = 2
+output = crack_safe(n, k)
+print(output)  # Example Output: "10"
